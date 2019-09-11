@@ -1,0 +1,146 @@
+Sub CaliforniaChecklists()
+
+    Worksheets("Sheet2").Copy After:=Worksheets("Sheet4")
+    Worksheets("Sheet5").Name = "CaliforniaChecklist"
+    Worksheets("Sheet5").Range("D31:D36") = "x"
+    
+    Do While Not IsEmpty(Cells(2, 1))
+        Worksheets("Sheet4").Range("A2:F2").Copy
+        Worksheets("Sheet5").Range("D1:D6").PasteSpecial Transpose:=True
+        Worksheets("Sheet5").Range("A1:D84").ExportAsFixedFormat Type:=xlTypePDF, Filename:=Cells(2, 5).Value & "_OT_N_Onboarding Checklist", From:=3
+        
+        Worksheets("Sheet4").Rows(2).EntireRow.Delete
+    Loop
+MsgBox "Congratulations! All of your checklists are complete, and can be found in your computers documents"
+End Sub
+Sub Macro2()
+           
+    Do While Not IsEmpty(Cells(2, 1))
+        Worksheets("Sheet1").Range("A2:F2").Copy
+        Worksheets("Sheet2").Range("D1:D6").PasteSpecial Transpose:=True
+        Worksheets("Sheet2").Range("A1:D84").ExportAsFixedFormat Type:=xlTypePDF, Filename:=Cells(2, 5).Value & "_OT_N_Onboarding Checklist", From:=3
+        Worksheets("Sheet1").Rows(2).EntireRow.Delete
+    Loop
+
+End Sub
+
+Sub Checklists()
+
+    r = 2
+    Do While Not IsEmpty(Cells(r, 1))
+    
+            If Cells(r, 6).Value = "*CA*" Then
+            Worksheets("Sheet1").Rows(r).EntireRow.Cut
+            Worksheets("Sheet4").Cells(r, 1).Paste
+            
+            End If
+            r = r + 1
+    Loop
+    
+    
+        
+    Do While Not IsEmpty(Cells(2, 1))
+
+        Worksheets("Sheet1").Range("A2:F2").Copy
+        Worksheets("Sheet2").Range("D1:D6").PasteSpecial Transpose:=True
+        Worksheets("Sheet2").Range("A1:D84").ExportAsFixedFormat Type:=xlTypePDF, Filename:=Cells(2, 5).Value & "_OT_N_Onboarding Checklist", From:=3
+        Worksheets("Sheet1").Rows(2).EntireRow.Delete
+    Loop
+    
+MsgBox "You can find the completed checklists in 'Documents'. Remember, these checklists do not include the California candidates. Go to the Sheet name California Roster, and run the macro there:)"
+    
+End Sub
+
+Sub MakeCaliRoster()
+
+    r = 2
+        Do
+            item_in_review = Worksheets("Sheet1").Range("G" & r)
+    
+            If InStr(item_in_review, "CA") Then
+                Worksheets("Sheet1").Rows(r).Cut
+                Worksheets("Sheet4").Activate
+                a = Worksheets("Sheet4").Cells(Rows.Count, 1).End(xlUp).Row
+                Worksheets("Sheet4").Cells((a + 1), 1).Select
+                Worksheets("Sheet4").Paste
+
+            End If
+            r = r + 1
+        Loop Until item_in_review = ""
+        
+          
+    Worksheets("Sheet1").Columns("A").SpecialCells(xlCellTypeBlanks).EntireRow.Delete
+
+Application.CutCopyMode = False
+
+End Sub
+Sub MakeCaliRosterF()
+    
+    Worksheets("Sheet1").Copy After:=Worksheets("Sheet2")
+    Worksheets("Sheet1 (2)").Name = "Full Roster"
+    
+    Dim ws As Worksheet
+    Set ws = Worksheets.Add(Type:=xlWorksheet, After:=Worksheets("Full Roster"))
+    With ws
+        .Name = "California Roster"
+    End With
+    
+    r = 2
+        Do
+            item_in_review = Worksheets("Sheet1").Range("G" & r)
+    
+            If InStr(item_in_review, "CA") Then
+                Worksheets("Sheet1").Rows(r).Cut
+                Worksheets("California Roster").Activate
+                a = Worksheets("California Roster").Cells(Rows.Count, 1).End(xlUp).Row
+                Worksheets("California Roster").Cells((a + 1), 1).Select
+                Worksheets("California Roster").Paste
+
+            End If
+            r = r + 1
+        Loop Until item_in_review = ""
+        
+          
+    Worksheets("Sheet1").Columns("A").SpecialCells(xlCellTypeBlanks).EntireRow.Delete
+
+Application.CutCopyMode = False
+
+    Worksheets("Sheet2").Copy After:=Worksheets("California Roster")
+    Worksheets("Sheet2 (2)").Name = "California Checklist"
+'   Worksheets("Sheet5").Range("D31:D36") = "x" (instead of the following if statement)
+    s = 9
+    Do
+        item_in_review2 = Worksheets("California Checklist").Range("C" & s)
+    
+            If InStr(item_in_review2, "CA Only") Then
+                Worksheets("California Checklist").Range("D" & s) = "x"
+
+            End If
+        s = s + 1
+    Loop Until item_in_review2 = ""
+
+
+MsgBox ("So we have now created a seperate roster and checklist for all the CA employees and are ready to start making checklists! Just double check the checklist to make that the right things are checkedoff :)")
+
+End Sub
+
+Sub Trialsss()
+
+ s = 9
+    Do
+        item_in_review2 = Worksheets("California Checklist").Range("C" & s)
+    
+        If InStr(item_in_review2, "CA Only,") Then
+            Worksheets("California Checklist").Range("D" & s) = "x"
+
+            End If
+        s = s + 1
+    Loop Until item_in_review2 = ""
+
+End Sub
+
+Sub Trial2()
+
+    Worksheets("Sheet1").Range(cutRange).Cut Worksheets("Sheet4").Range("2:2")
+    
+End Sub
